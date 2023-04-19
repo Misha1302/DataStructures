@@ -2,63 +2,95 @@
 
 using System.Text;
 
-public class MLinkedList<T> 
+public class MLinkedList<T>
 {
-    private Node<T>? _start;
+    private Node<T>? _first;
 
-    public Node<T>? Last
+    public void AddLast(T value)
     {
-        get
-        {
-            Node<T>? currentNode = _start;
-            while (currentNode?.Next != null) currentNode = currentNode.Next;
-            return currentNode;
-        }
+        Node<T>? lastNode = GetLastNode();
+        if (lastNode == null) _first = new Node<T>(value);
+        else lastNode.Next = new Node<T>(value);
     }
 
-    public void Add(T obj)
+    public T? GetFirst()
     {
-        if (_start == null)
-        {
-            _start = new Node<T>(obj, null);
-        }
-        else
-        {
-            Node<T> currentNode = _start;
-            while (currentNode.Next != null) currentNode = currentNode.Next;
-            currentNode.Next = new Node<T>(obj, null);
-        }
+        if (_first == null) return default;
+        return _first.Value ?? default;
     }
 
-    public T Find(Predicate<T> predicate)
+    public T? GetLast()
     {
-        if (_start == null) ThrowHelper.ThrowNotFoundException();
-
-        Node<T>? currentNode = _start!;
-        do
-        {
-            if (predicate(currentNode.Value))
-                return currentNode.Value;
-            currentNode = currentNode.Next;
-        } while (currentNode != null);
-
-        ThrowHelper.ThrowNotFoundException();
-        return default!;
+        Node<T>? lastNode = GetLastNode();
+        return lastNode == null ? default : lastNode.Value;
     }
 
-    public bool Contains(Predicate<T> predicate)
+    public T GetByIndex(int index) => GetNodeByIndex(index).Value;
+
+    private Node<T> GetNodeByIndex(int index)
     {
-        if (_start == null) return false;
-
-        Node<T>? currentNode = _start!;
-        do
+        if (_first == null)
         {
-            if (predicate(currentNode.Value))
-                return true;
-            currentNode = currentNode.Next;
-        } while (currentNode != null);
+            ThrowerHelper.ThrowElementWasNotFound();
+            return null!;
+        }
 
-        return false;
+        Node<T> current = _first;
+        for (int i = 0; i < index; i++, current = current.Next)
+            if (current.Next == null)
+            {
+                ThrowerHelper.ThrowElementWasNotFound();
+                return null!;
+            }
+
+        return current;
+    }
+
+    public int GetLength()
+    {
+        if (_first == null) return 0;
+
+        Node<T> current = _first;
+
+        int counter;
+        for (counter = 1; current.Next != null; current = current.Next, counter++)
+        {
+        }
+
+        return counter;
+    }
+
+    public void Insert(int index, T value)
+    {
+        if (index == 0)
+        {
+            _first = new Node<T>(value) { Next = _first };
+            return;
+        }
+
+        Node<T> nodeByIndex = GetNodeByIndex(index - 1);
+        nodeByIndex.Next = nodeByIndex with { Value = value };
+    }
+
+    public void Remove(int index)
+    {
+        if (index == 0)
+        {
+            _first = _first?.Next;
+            return;
+        }
+
+        Node<T> nodeByIndex = GetNodeByIndex(index - 1);
+        nodeByIndex.Next = nodeByIndex.Next?.Next;
+    }
+
+    private Node<T>? GetLastNode()
+    {
+        if (_first == null) return null;
+
+        Node<T> current = _first;
+        while (current.Next != null) current = current.Next;
+        return current;
     }
 
     public override string ToString()
@@ -66,39 +98,39 @@ public class MLinkedList<T>
         StringBuilder builder = new(32);
         builder.Append('[');
 
-        if (_start == null) goto end;
-
-        Node<T>? currentNode = _start!;
-        do
+        if (_first != null)
         {
-            builder.Append(currentNode.Value);
-            builder.Append(',');
-            currentNode = currentNode.Next;
-        } while (currentNode != null);
+            for (Node<T>? current = _first; current != null; current = current.Next)
+            {
+                builder.Append(current.Value);
+                builder.Append(',');
+            }
 
-        end:
+            builder.Remove(builder.Length - 1, 1);
+        }
+
         builder.Append(']');
         return builder.ToString();
     }
 }
 
-public static class ThrowHelper
+internal static class ThrowerHelper
 {
-    public static void ThrowNotFoundException()
+    public static void ThrowElementWasNotFound()
     {
-        throw new MLinkedListException("Value was not found");
+        throw new MLinkedListException("Element wasn't found");
     }
 }
 
-public class MLinkedListException : Exception
+internal class MLinkedListException : Exception
 {
     public MLinkedListException(string message) : base(message)
     {
     }
 }
 
-public record Node<T>(T Value, Node<T>? Next)
+public record Node<T>(T Value, Node<T>? Next = null)
 {
-    public readonly T Value = Value;
     public Node<T>? Next = Next;
+    public T Value = Value;
 }
