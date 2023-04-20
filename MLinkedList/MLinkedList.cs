@@ -1,7 +1,5 @@
 ﻿namespace MLinkedList;
 
-using System.Text;
-
 public class MLinkedList<T>
 {
     private Node<T> _first;
@@ -48,15 +46,16 @@ public class MLinkedList<T>
 
     public void Insert(int index, T value)
     {
-        _len++;
         if (index == 0)
         {
             _first = new Node<T>(value) { Next = _first };
+            _len++;
             return;
         }
 
         var nodeByIndex = GetNodeByIndex(index - 1);
         nodeByIndex.Next = nodeByIndex with { Value = value };
+        _len++;
     }
 
     public void Remove(int index)
@@ -77,23 +76,7 @@ public class MLinkedList<T>
         _len--;
     }
 
-    public override string ToString()
-    {
-        var builder = new StringBuilder(32);
-        builder.Append('[');
+    internal Node<T> GetFirstNode() => _first;
 
-        if (_len != 0)
-        {
-            for (var current = _first; current != null; current = current.Next)
-            {
-                builder.Append(current.Value);
-                builder.Append(',');
-            }
-
-            builder.Remove(builder.Length - 1, 1);
-        }
-
-        builder.Append(']');
-        return builder.ToString();
-    }
+    public override string ToString() => this.ToStringExt();
 }
