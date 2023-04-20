@@ -95,17 +95,3 @@ public class MLinkedList<T>
         return builder.ToString();
     }
 }
-
-internal static class ThrowerHelper
-{
-    public static void ThrowElementWasNotFound()
-    {
-        throw new IndexOutOfRangeException("Element wasn't found");
-    }
-}
-
-public record Node<T>(T Value, Node<T>? Next = null)
-{
-    public Node<T>? Next = Next;
-    public T Value = Value;
-}
