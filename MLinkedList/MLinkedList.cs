@@ -48,6 +48,7 @@ public class MLinkedList<T>
 
     public void Insert(int index, T value)
     {
+        _len++;
         if (index == 0)
         {
             _first = new Node<T>(value) { Next = _first };
