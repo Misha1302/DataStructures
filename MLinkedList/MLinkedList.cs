@@ -4,17 +4,18 @@ using System.Text;
 
 public class MLinkedList<T>
 {
-    private Node<T>? _first;
-    private Node<T>? _last;
+    private Node<T> _first = null!;
+    private Node<T> _last = null!;
     private int _len;
 
     public void AddLast(T value)
     {
-        Node<T>? lastNode = _last;
-        Node<T> newLastNode = new(value);
+        var newLastNode = new Node<T>(value);
 
-        if (lastNode == null) _first = newLastNode;
-        else lastNode.Next = newLastNode;
+        if (_len == 0)
+            _first = newLastNode;
+        else
+            _last.Next = newLastNode;
 
         _last = newLastNode;
         _len++;
@@ -24,27 +25,21 @@ public class MLinkedList<T>
 
     public T GetLast()
     {
-        if (_len == 0) ThrowerHelper.ThrowElementWasNotFound();
-        return _last!.Value;
+        if (_len == 0)
+            throw new ArgumentOutOfRangeException();
+        return _last.Value;
     }
 
     public T GetByIndex(int index) => GetNodeByIndex(index).Value;
 
     private Node<T> GetNodeByIndex(int index)
     {
-        if (_first == null)
-        {
-            ThrowerHelper.ThrowElementWasNotFound();
-            return null!;
-        }
+        if (_len <= index)
+            throw new ArgumentOutOfRangeException(nameof(index));
 
-        Node<T> current = _first;
-        for (int i = 0; i < index; i++, current = current.Next)
-            if (current.Next == null)
-            {
-                ThrowerHelper.ThrowElementWasNotFound();
-                return null!;
-            }
+        var current = _first;
+        for (var i = 0; i < index; i++)
+            current = current.Next!;
 
         return current;
     }
@@ -59,30 +54,36 @@ public class MLinkedList<T>
             return;
         }
 
-        Node<T> nodeByIndex = GetNodeByIndex(index - 1);
+        var nodeByIndex = GetNodeByIndex(index - 1);
         nodeByIndex.Next = nodeByIndex with { Value = value };
     }
 
     public void Remove(int index)
     {
-        if (index == 0)
+        if (_len <= index)
+            throw new ArgumentOutOfRangeException(nameof(index));
+
+        if (index != 0)
         {
-            _first = _first?.Next;
-            return;
+            var nodeByIndex = GetNodeByIndex(index - 1);
+            nodeByIndex.Next = nodeByIndex.Next?.Next;
+        }
+        else
+        {
+            _first = _first.Next!;
         }
 
-        Node<T> nodeByIndex = GetNodeByIndex(index - 1);
-        nodeByIndex.Next = nodeByIndex.Next?.Next;
+        _len--;
     }
 
     public override string ToString()
     {
-        StringBuilder builder = new(32);
+        var builder = new StringBuilder(32);
         builder.Append('[');
 
-        if (_first != null)
+        if (_len != 0)
         {
-            for (Node<T>? current = _first; current != null; current = current.Next)
+            for (var current = _first; current != null; current = current.Next)
             {
                 builder.Append(current.Value);
                 builder.Append(',');

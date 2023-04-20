@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>MLinkedList</RootNamespace>
-        <AssemblyName>MLinkedList</AssemblyName>
+        <PackageId>MLinkedList</PackageId>
     </PropertyGroup>
 
 </Project>
