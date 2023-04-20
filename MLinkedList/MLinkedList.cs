@@ -4,8 +4,8 @@ using System.Text;
 
 public class MLinkedList<T>
 {
-    private Node<T> _first = null!;
-    private Node<T> _last = null!;
+    private Node<T> _first;
+    private Node<T> _last;
     private int _len;
 
     public void AddLast(T value)
