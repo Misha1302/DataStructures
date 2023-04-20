@@ -1,7 +1,7 @@
 namespace MLinkedList;
 
-public record Node<T>(T Value, Node<T>? Next = null)
+public record Node<T>(T Value)
 {
-    public Node<T>? Next = Next;
     public T Value = Value;
+    public Node<T> Next;
 }
