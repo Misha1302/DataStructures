@@ -5,24 +5,27 @@ using System.Text;
 public class MLinkedList<T>
 {
     private Node<T>? _first;
+    private Node<T>? _last;
+    private int _len;
 
     public void AddLast(T value)
     {
-        Node<T>? lastNode = GetLastNode();
-        if (lastNode == null) _first = new Node<T>(value);
-        else lastNode.Next = new Node<T>(value);
+        Node<T>? lastNode = _last;
+        Node<T> newLastNode = new(value);
+
+        if (lastNode == null) _first = newLastNode;
+        else lastNode.Next = newLastNode;
+
+        _last = newLastNode;
+        _len++;
     }
 
-    public T? GetFirst()
-    {
-        if (_first == null) return default;
-        return _first.Value ?? default;
-    }
+    public T GetFirst() => GetNodeByIndex(0).Value;
 
-    public T? GetLast()
+    public T GetLast()
     {
-        Node<T>? lastNode = GetLastNode();
-        return lastNode == null ? default : lastNode.Value;
+        if (_len == 0) ThrowerHelper.ThrowElementWasNotFound();
+        return _last!.Value;
     }
 
     public T GetByIndex(int index) => GetNodeByIndex(index).Value;
@@ -46,19 +49,7 @@ public class MLinkedList<T>
         return current;
     }
 
-    public int GetLength()
-    {
-        if (_first == null) return 0;
-
-        Node<T> current = _first;
-
-        int counter;
-        for (counter = 1; current.Next != null; current = current.Next, counter++)
-        {
-        }
-
-        return counter;
-    }
+    public int GetLength() => _len;
 
     public void Insert(int index, T value)
     {
@@ -82,15 +73,6 @@ public class MLinkedList<T>
 
         Node<T> nodeByIndex = GetNodeByIndex(index - 1);
         nodeByIndex.Next = nodeByIndex.Next?.Next;
-    }
-
-    private Node<T>? GetLastNode()
-    {
-        if (_first == null) return null;
-
-        Node<T> current = _first;
-        while (current.Next != null) current = current.Next;
-        return current;
     }
 
     public override string ToString()
@@ -118,14 +100,7 @@ internal static class ThrowerHelper
 {
     public static void ThrowElementWasNotFound()
     {
-        throw new MLinkedListException("Element wasn't found");
-    }
-}
-
-internal class MLinkedListException : Exception
-{
-    public MLinkedListException(string message) : base(message)
-    {
+        throw new IndexOutOfRangeException("Element wasn't found");
     }
 }
 
