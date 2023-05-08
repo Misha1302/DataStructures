@@ -49,4 +49,14 @@ public class MLinkedList
 
         return current;
     }
+
+    public MNode this[int index]
+    {
+        get => GetNodeByIndex(index);
+    }
+
+    public override string ToString()
+    {
+        return this.ToStringExt();
+    }
 }
