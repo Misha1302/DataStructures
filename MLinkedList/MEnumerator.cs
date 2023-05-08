@@ -7,12 +7,10 @@ public class MEnumerator<T>
 
     public MEnumerator(MLinkedList<T> linkedList)
     {
-        const string message = "There are no items in the collection";
-
         _start = linkedList.GetFirstNode();
-        _currentNode = _start ?? throw new ArgumentOutOfRangeException(nameof(linkedList), message);
+        _currentNode = _start;
     }
-
+    
     public T Current => _currentNode.Value;
 
     public bool MoveNext()

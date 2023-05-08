@@ -34,8 +34,8 @@ void MLinkedList()
     Console.WriteLine(mLinkedList.GetFirst()); // 2
     Console.WriteLine(mLinkedList.GetLast()); // 3
 
-    Console.WriteLine(mLinkedList.GetByIndex(0)); // 2
-    Console.WriteLine(mLinkedList.GetByIndex(2)); // 5
+    Console.WriteLine(mLinkedList[0]); // 2
+    Console.WriteLine(mLinkedList[2]); // 5
 
     Console.WriteLine(mLinkedList.GetLength()); // 3
 

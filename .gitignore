@@ -500,3 +500,6 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,rider,visualstudiocode
+.idea/.idea.DataStructures/.idea/encodings.xml
+.idea/.idea.DataStructures/.idea/indexLayout.xml
+.idea/.idea.DataStructures/.idea/vcs.xml

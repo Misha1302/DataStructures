@@ -6,6 +6,12 @@ public class MLinkedList<T>
     private Node<T> _last;
     private int _len;
 
+    public T this[int index]
+    {
+        get => GetNodeByIndex(index).Value;
+        set => GetNodeByIndex(index).Value = value;
+    }
+
     public void AddLast(T value)
     {
         var newLastNode = new Node<T>(value);
@@ -27,8 +33,6 @@ public class MLinkedList<T>
             throw new ArgumentOutOfRangeException();
         return _last.Value;
     }
-
-    public T GetByIndex(int index) => GetNodeByIndex(index).Value;
 
     private Node<T> GetNodeByIndex(int index)
     {
