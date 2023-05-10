@@ -33,18 +33,20 @@ void MLinkedList()
     mLinkedList.AddLast();
     mLinkedList.AddLast();
 
-    Console.WriteLine(mLinkedList.First); // 2
-    Console.WriteLine(mLinkedList.Last); // 3
+    Console.WriteLine(mLinkedList.First); // 0
+    Console.WriteLine(mLinkedList.Last); // 2
 
-    Console.WriteLine(mLinkedList[0]); // 2
-    Console.WriteLine(mLinkedList[2]); // 5
+    Console.WriteLine(mLinkedList[0]); // 0
+    Console.WriteLine(mLinkedList[2]); // 2
 
     Console.WriteLine(mLinkedList.Len); // 3
 
-    Console.WriteLine(mLinkedList.ToString()); // [2,3,5]
-    mLinkedList.Insert(0); // [-5,2,3,5]
-    mLinkedList.Insert(3); // [-5,2,3,-3,5]
-    //mLinkedList.Remove(1); // [-5,3,-3,5]
+    Console.WriteLine(mLinkedList.ToString()); // [0,1,2]
+    mLinkedList.Insert(0); // [3,0,1,2]
+    mLinkedList.Insert(3); // [3,0,1,4,2]
+    Console.WriteLine(mLinkedList.ToString()); // [3,0,1,4,2]
+    mLinkedList.RemoveAt(1); // [3,1,4,2]
+    mLinkedList.RemoveAt(0); // [1,4,2]
     Console.WriteLine(mLinkedList.Len); // 3
-    Console.WriteLine(mLinkedList.ToString()); // [-5,3,-3,5]
+    Console.WriteLine(mLinkedList.ToString()); // [1,4,2]
 }
